@@ -15,6 +15,8 @@ canvas {
     border: 2px solid #fff;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     transition: transform 0.2s;
+    width: 500px; /* Set a fixed width */
+    height: 500px; /* Set a fixed height */
 }
 
 canvas:hover {
@@ -22,7 +24,6 @@ canvas:hover {
 }
 
 h1 {
-    /* position: absolute; */
     position: center;
     top: 20px;
     font-size: 2.5em;
@@ -34,7 +35,7 @@ h1 {
 }
 
 button {
-    margin-top: 10px;
+    margin-top: 100px;
     padding: 10px 20px;
     background-color: #fff;
     color: #000;
@@ -43,6 +44,56 @@ button {
 }
 
 button:hover {
+    background-color: #ddd;
+}
+
+.mobile-controls {
+    display: none;
+    margin-top: 10px;
+}
+
+.joystick {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.joystick-btn {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.joystick-btn.up {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.joystick-btn.left {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.joystick-btn.down {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.joystick-btn.right {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.joystick-btn:hover {
     background-color: #ddd;
 }
 
@@ -58,5 +109,9 @@ button:hover {
     button {
         width: 100%;
         padding: 15px;
+    }
+
+    .mobile-controls {
+        display: block;
     }
 }
