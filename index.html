@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/snake-game/src/css/style.css">
 </head>
 <body>
     <div class="game-container">
@@ -12,9 +12,18 @@
         <canvas id="gameCanvas"></canvas>
         <div class="score-board">
             <span>Score: <span id="score">0</span></span>
+            <span>High Score: <span id="highScore">0</span></span>
         </div>
         <button id="restartBtn">Restart</button>
+        <div class="mobile-controls">
+            <div class="joystick">
+                <button id="upBtn" class="joystick-btn up"></button>
+                <button id="leftBtn" class="joystick-btn left"></button>
+                <button id="downBtn" class="joystick-btn down"></button>
+                <button id="rightBtn" class="joystick-btn right"></button>
+            </div>
+        </div>
     </div>
-    <script src="scricpt.js"></script>
+    <script src="/snake-game/src/js/scricpt.js"></script>
 </body>
 </html>
