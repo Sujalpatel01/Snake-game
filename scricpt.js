@@ -1,12 +1,17 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const box = 20;
+const box = 50;
 
 let snake = [{ x: 9 * box, y: 10 * box }];
 let food = generateFood();
 let score = 0;
+let highScore = localStorage.getItem('highScore') || 0; // Initialize high score from local storage
 let d = 'RIGHT';
 let game;
+let speed = 200; // Initial speed (in milliseconds)
+
+// Display the initial high score
+document.getElementById('highScore').innerText = highScore;
 
 // Event listeners for controls, restart, and resizing
 document.addEventListener('keydown', direction);
@@ -16,6 +21,12 @@ window.addEventListener('resize', resizeCanvas);
 // Add touch event listeners for mobile controls
 canvas.addEventListener('touchstart', handleTouchStart, false);
 canvas.addEventListener('touchmove', handleTouchMove, false);
+
+// Add event listeners for mobile control buttons
+document.getElementById('upBtn').addEventListener('click', () => { if (d != 'DOWN') d = 'UP'; });
+document.getElementById('leftBtn').addEventListener('click', () => { if (d != 'RIGHT') d = 'LEFT'; });
+document.getElementById('downBtn').addEventListener('click', () => { if (d != 'UP') d = 'DOWN'; });
+document.getElementById('rightBtn').addEventListener('click', () => { if (d != 'LEFT') d = 'RIGHT'; });
 
 let xDown = null;
 let yDown = null;
@@ -114,6 +125,9 @@ function draw() {
         score++;
         document.getElementById('score').innerText = score;
         food = generateFood(); // Generate new food
+        speed = Math.max(50, speed - 10); // Increase speed (decrease interval time)
+        clearInterval(game); // Clear the current interval
+        game = setInterval(draw, speed); // Set a new interval with the updated speed
     } else {
         snake.pop(); // Remove the last part of the snake if no food was eaten
     }
@@ -123,8 +137,12 @@ function draw() {
 
     // Check for collisions (wall or self)
     if (snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead, snake)) {
-        clearInterval(game); // Stop the game loop
-        alert('Game Over! Your score: ' + score);
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('highScore', highScore); // Update high score in local storage
+            document.getElementById('highScore').innerText = highScore; // Update high score display
+        }
+        restartGame(); // Automatically restart the game
     }
 
     // Add the new head to the snake
@@ -139,16 +157,18 @@ function restartGame() {
     document.getElementById('score').innerText = score;
     d = 'RIGHT'; // Reset direction
     food = generateFood(); // Generate new food
-    game = setInterval(draw, 100); // Restart game loop
+    speed = 200; // Reset speed
+    game = setInterval(draw, speed); // Restart game loop with initial speed
 }
 
 // Function to adjust the canvas size dynamically
 function resizeCanvas() {
-    canvas.width = Math.min(window.innerWidth - 20, 400);
-    canvas.height = Math.min(window.innerHeight - 100, 400);
+    const minDimension = Math.min(window.innerWidth - 20, window.innerHeight - 100);
+    canvas.width = minDimension;
+    canvas.height = minDimension;
     food = generateFood(); // Ensure food is placed correctly within new canvas size
 }
 
 // Initialize the game
 resizeCanvas();
-game = setInterval(draw, 100);
+game = setInterval(draw, speed); // Set game loop interval to initial speed
